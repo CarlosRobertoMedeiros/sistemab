@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>br.com.roberto.sistemab</groupId>
+  <artifactId>sistemab-parent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>sistemab</name>
+  
+  <modules>
+  	<module>sistemab-ejb</module>
+  	<module>sistemab-api</module>
+  	<module>sistemab-ear</module>
+  </modules>
+  
+    <properties>
+	
+	<!-- Configurações Padronizadas -->
+	<maven.compiler.target>1.8</maven.compiler.target>
+	<maven.compiler.source>1.8</maven.compiler.source>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<failOnMissingWebXml>false</failOnMissingWebXml>
+	
+	<!-- Dependências Externas -->
+	<javaee-api-version>7.0</javaee-api-version>
+
+  </properties>
+
+
+	<dependencies>		
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>${javaee-api-version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+
+
+</project>
