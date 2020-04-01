@@ -2,17 +2,16 @@ package br.com.roberto.business;
 
 import java.util.List;
 
-import javax.inject.Inject;
+import javax.ejb.EJB;
 
 import br.com.roberto.dao.UsuarioDao;
-import br.com.roberto.dao.UsuarioDaoImpl;
 import br.com.roberto.dto.UsuarioDto;
 import br.com.roberto.model.Usuario;
 
 public class UsuarioBusinessImpl implements UsuarioBusiness {
 
-	@Inject
-	private UsuarioDaoImpl usuarioDao;
+	@EJB
+	private UsuarioDao usuarioDao;
 	
 	@Override
 	public List<UsuarioDto> listaTodos(int inicio, int tamanho) {

@@ -3,10 +3,12 @@ package br.com.roberto;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-import io.swagger.jaxrs.config.BeanConfig;
-
 @ApplicationPath("/v1")
 public class SistemabApplication extends Application{
+	 
+	public SistemabApplication() {
+	
+	}
 	
 	//TODO: Passar as Configurações corretas do config 
 //	public SistemabApplication() {

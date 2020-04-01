@@ -4,6 +4,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
@@ -21,7 +23,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import br.com.roberto.business.UsuarioBusiness;
-import br.com.roberto.business.UsuarioBusinessImpl;
 import br.com.roberto.dto.UsuarioDto;
 import br.com.roberto.model.Usuario;
 import br.com.roberto.resource.bean.UsuarioFilterBean;
@@ -29,12 +30,14 @@ import br.com.roberto.resource.bean.UsuarioFilterBean;
 @Path("/usuarios")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@RolesAllowed("ADMIN")
 public class UsuarioResource {
-	
+		
 	@Inject
-	private UsuarioBusinessImpl usuarioBusiness;
+	private UsuarioBusiness usuarioBusiness;
 
 
+	@PermitAll
 	@GET
 	public Response getUsuarios(@BeanParam UsuarioFilterBean filterBean)  {
 		List<UsuarioDto> usuarios = usuarioBusiness.listaTodos(filterBean.getInicio(), filterBean.getTamanho());
@@ -49,6 +52,7 @@ public class UsuarioResource {
 				.build();
 	}
 
+	@PermitAll
 	@GET
 	@Path("/{id}")
 	public Response getUsuario(@PathParam("id") int id) {
@@ -63,6 +67,7 @@ public class UsuarioResource {
 				.build();
 	}
 
+	@RolesAllowed("ADMIN")
 	@POST
 	public Response adicionarUsuario(Usuario usuario, @Context UriInfo uriInfo) throws URISyntaxException {
 
@@ -89,6 +94,7 @@ public class UsuarioResource {
 				 .build();
 	}
 	
+	@RolesAllowed("ADMIN")
 	@DELETE
 	@Path("/{id}")
 	public Response excluirUsuario(@PathParam("id") int id) {
