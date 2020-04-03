@@ -7,9 +7,9 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   
-  <artifactId>sistemab-ejb</artifactId>
+  <artifactId>sistemab-camada-ejb</artifactId>
   <name>sistemab-camada-ejb</name>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>${sistemab-camada-ejb-version}</version>
   <packaging>ejb</packaging>
   
   

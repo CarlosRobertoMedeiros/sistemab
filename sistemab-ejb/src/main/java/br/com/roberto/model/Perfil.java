@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "tb_perfil", schema = "sistemaexemplods")
+//@Entity
+//@Table(name = "tb_perfil", schema = "sistemaexemplods")
 public class Perfil {
 	
 	@Id

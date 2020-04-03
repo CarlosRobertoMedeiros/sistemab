@@ -7,10 +7,10 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>sistemab-ear</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>sistemab-camada-ear</artifactId>
 	<packaging>ear</packaging>
 	<name>sistemab-camada-ear</name>
+	<version>${sistemab-camada-ear-version}</version>
   
   
 	<profiles>
@@ -32,12 +32,12 @@
 							<modules>
 								<webModule>
 									<groupId>br.com.roberto.sistemab</groupId>
-									<artifactId>sistemab-api</artifactId>
+									<artifactId>sistemab-camada-api</artifactId>
 									<contextRoot>/sistemab-api</contextRoot>
 								</webModule>
 									<ejbModule>
 									<groupId>br.com.roberto.sistemab</groupId>
-									<artifactId>sistemab-ejb</artifactId>
+									<artifactId>sistemab-camada-ejb</artifactId>
 								</ejbModule>
 							</modules>
 						</configuration>
@@ -76,16 +76,16 @@
     	
     	<dependency>
     		<groupId>br.com.roberto.sistemab</groupId>
-    		<artifactId>sistemab-ejb</artifactId>
+    		<artifactId>sistemab-camada-ejb</artifactId>
     		<type>ejb</type>
-    		<version>0.0.1-SNAPSHOT</version>
+    		<version>${sistemab-camada-ejb-version}</version>
     	</dependency>
     	
     	<dependency>
     		<groupId>br.com.roberto.sistemab</groupId>
-    		<artifactId>sistemab-api</artifactId>
+    		<artifactId>sistemab-camada-api</artifactId>
     		<type>war</type>
-    		<version>0.0.1-SNAPSHOT</version>
+    		<version>${sistemab-camada-api-version}</version>
     	</dependency>
     
     </dependencies> 
