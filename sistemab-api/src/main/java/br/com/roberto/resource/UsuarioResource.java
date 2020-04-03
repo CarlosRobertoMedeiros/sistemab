@@ -22,10 +22,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
-import br.com.roberto.business.UsuarioBusiness;
 import br.com.roberto.dto.UsuarioDto;
 import br.com.roberto.model.Usuario;
+import br.com.roberto.negocio.UsuarioNegocio;
 import br.com.roberto.resource.bean.UsuarioFilterBean;
+
 
 @Path("/usuarios")
 @Produces(MediaType.APPLICATION_JSON)
@@ -34,13 +35,13 @@ import br.com.roberto.resource.bean.UsuarioFilterBean;
 public class UsuarioResource {
 		
 	@Inject
-	private UsuarioBusiness usuarioBusiness;
+	private UsuarioNegocio usuarioNegocio;
 
-
+	
 	@PermitAll
 	@GET
 	public Response getUsuarios(@BeanParam UsuarioFilterBean filterBean)  {
-		List<UsuarioDto> usuarios = usuarioBusiness.listaTodos(filterBean.getInicio(), filterBean.getTamanho());
+		List<UsuarioDto> usuarios = usuarioNegocio.listaTodos(filterBean.getInicio(), filterBean.getTamanho());
 		
 		if (usuarios.isEmpty()) {
 			return Response
@@ -56,7 +57,7 @@ public class UsuarioResource {
 	@GET
 	@Path("/{id}")
 	public Response getUsuario(@PathParam("id") int id) {
-		UsuarioDto usuario = usuarioBusiness.listaPorId(id);
+		UsuarioDto usuario = usuarioNegocio.listaPorId(id);
 		if(usuario==null) {
 			return Response
 					.noContent()
@@ -71,7 +72,7 @@ public class UsuarioResource {
 	@POST
 	public Response adicionarUsuario(Usuario usuario, @Context UriInfo uriInfo) throws URISyntaxException {
 
-		UsuarioDto novoUsuario = usuarioBusiness.adiciona(usuario);
+		UsuarioDto novoUsuario = usuarioNegocio.adiciona(usuario);
 		String newId = String.valueOf(novoUsuario.getId());
 		URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();
 		
@@ -85,7 +86,7 @@ public class UsuarioResource {
 	@Path("/{id}")
 	public Response atualizarUsuario(@PathParam("id") int id,  Usuario usuario, @Context UriInfo uriInfo) throws URISyntaxException {
 		
-		UsuarioDto meuUsuario = usuarioBusiness.atualiza(id, usuario);
+		UsuarioDto meuUsuario = usuarioNegocio.atualiza(id, usuario);
 		URI uri = uriInfo.getAbsolutePathBuilder().path(meuUsuario.getId().toString()).build();
 		
 		return Response.created(uri)
@@ -98,7 +99,7 @@ public class UsuarioResource {
 	@DELETE
 	@Path("/{id}")
 	public Response excluirUsuario(@PathParam("id") int id) {
-		boolean excluiu = usuarioBusiness.remove(id);
+		boolean excluiu = usuarioNegocio.remove(id);
 		if (excluiu) {
 			return Response
 					 .status(Status.OK)

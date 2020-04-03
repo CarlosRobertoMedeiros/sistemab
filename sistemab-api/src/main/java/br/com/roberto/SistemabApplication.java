@@ -3,9 +3,17 @@ package br.com.roberto;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+
+
+/**
+ * 
+ * @author roberto
+ *
+ */
 @ApplicationPath("/v1")
 public class SistemabApplication extends Application{
 	 
+	
 	public SistemabApplication() {
 	
 	}

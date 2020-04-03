@@ -2,23 +2,36 @@ package br.com.roberto.dao;
 
 import java.util.List;
 
-import javax.ejb.Local;
-
 import br.com.roberto.dto.UsuarioDto;
 import br.com.roberto.model.Usuario;
 
-@Local
-public interface UsuarioDao {
-	
-	public List<UsuarioDto> listaTodos(int inicio, int tamanho); 
-	
-	public UsuarioDto listaPorId(int id); 
+public class UsuarioDao extends CrudGenerico<Usuario, UsuarioDto> {
 
-	public UsuarioDto adiciona(Usuario usuario);
+	@Override
+	public Usuario criar(Usuario t) {
+		return super.criar(t);
+	}
 
-	public UsuarioDto atualiza(int id, Usuario usuario);
+	@Override
+	public boolean excluir(int id) {
+		return super.excluir(id);
+	}
 
-	public boolean remove(int id);
-	
-	
+	@Override
+	public Usuario buscaPorId(int id, Usuario usuario) {
+		return super.buscaPorId(id, usuario);
+	}
+
+	@Override
+	public Usuario atualiza(int id, Usuario t) {
+		return super.atualiza(id, t);
+	}
+
+	public List<Usuario> buscaTodos(int inicio, int tamanho) {
+		List<Usuario> usuarios = getManager().createQuery("select u from Usuario u", Usuario.class)
+				.setFirstResult(inicio).setMaxResults(tamanho).getResultList();
+		return usuarios;
+
+	}
+
 }

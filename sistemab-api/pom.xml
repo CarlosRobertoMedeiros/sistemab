@@ -1,81 +1,89 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  
-  <parent>
-    <groupId>br.com.roberto.sistemab</groupId>
-    <artifactId>sistemab-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  
-  <artifactId>sistemab-camada-api</artifactId>
-  <packaging>war</packaging>
-  <version>${sistemab-camada-api-version}</version>
-  <name>sistemab-camada-api</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <properties>
-  	
-  	<!-- Dependências Maven Repository -->
-  	<swagger-jaxrs-version>1.5.20</swagger-jaxrs-version>
-  	
-  	<!-- Dependências Entre Projetos -->
-  	<sistemab-ejb-version>0.0.1-SNAPSHOT</sistemab-ejb-version>
-  	
-  </properties>
-  
-  <dependencies>
-	
-	<!-- https://mvnrepository.com/artifact/io.swagger/swagger-jaxrs -->
-	<dependency>
-	    <groupId>io.swagger</groupId>
-	    <artifactId>swagger-jaxrs</artifactId>
-	    <version>${swagger-jaxrs-version}</version>
-	</dependency>
-	
-	<!-- Dependências Internas -->
-	<dependency>
+	<parent>
 		<groupId>br.com.roberto.sistemab</groupId>
-		<artifactId>sistemab-camada-ejb</artifactId>
-		<version>${sistemab-camada-ejb-version}</version>
-		<scope>compile</scope>
-	</dependency>
-  
-  
-  </dependencies>
-  
-   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>3.2.3</version>
-        <executions>
-        	<execution>
-        		<id>gerar-war</id>
-        		<phase>compile</phase>
-        		<goals>
-        			<goal>exploded</goal>
-        		</goals>
-        	</execution>
-        </executions>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-          <webResources>
-            <resource>
-              <!-- this is relative to the pom.xml directory -->
-              <directory>src/main/resources</directory>
-              <filtering>true</filtering>>
-              <includes>
-	              <include>healthcheck.html</include>
-              </includes>
-            </resource>
-            <resource>
-            	<directory>web</directory>>
-            </resource>
-          </webResources>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  
-  
+		<artifactId>sistemab-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>sistemab-camada-api</artifactId>
+	<packaging>war</packaging>
+	<version>${sistemab-camada-api-version}</version>
+	<name>sistemab-camada-api</name>
+
+	<properties>
+
+		<!-- Dependências Maven Repository -->
+		<swagger-jaxrs-version>1.5.20</swagger-jaxrs-version>
+
+		<!-- Dependências Entre Projetos -->
+		<sistemab-ejb-version>0.0.1-SNAPSHOT</sistemab-ejb-version>
+
+	</properties>
+
+	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/io.swagger/swagger-jaxrs -->
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jaxrs</artifactId>
+			<version>${swagger-jaxrs-version}</version>
+		</dependency>
+
+		<!-- Dependências Internas -->
+		<dependency>
+			<groupId>br.com.roberto.sistemab</groupId>
+			<artifactId>sistemab-camada-ejb</artifactId>
+			<version>${sistemab-camada-ejb-version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.3</version>
+				<executions>
+					<execution>
+						<id>gerar-war</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>exploded</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<webResources>
+						<resource>
+							<!-- this is relative to the pom.xml directory -->
+							<directory>src/main/resources</directory>
+							<filtering>true</filtering>
+							
+							<includes>
+								<include>healthcheck.html</include>
+							</includes>
+						</resource>
+						<resource>
+							<directory>web</directory>
+							
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
 </project>
