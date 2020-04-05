@@ -22,6 +22,8 @@
 		<!-- Dependências Entre Projetos -->
 		<sistemab-ejb-version>0.0.1-SNAPSHOT</sistemab-ejb-version>
 
+		
+
 	</properties>
 
 	<dependencies>
@@ -32,6 +34,7 @@
 			<artifactId>swagger-jaxrs</artifactId>
 			<version>${swagger-jaxrs-version}</version>
 		</dependency>
+		
 
 		<!-- Dependências Internas -->
 		<dependency>

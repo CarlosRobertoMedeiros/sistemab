@@ -1,5 +1,6 @@
 package br.com.roberto.negocio;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,15 +9,21 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
-import br.com.roberto.dao.UsuarioDao;
+import org.apache.commons.beanutils.BeanUtils;
+
+import br.com.roberto.dao.UsuarioDaoImpl;
 import br.com.roberto.dto.UsuarioDto;
 import br.com.roberto.model.Usuario;
+import br.com.roberto.negocio.servico.ServicoUsuario;
 
 @Stateless
 public class UsuarioNegocioImpl implements UsuarioNegocio {
 
 	@Inject
-	private UsuarioDao usuarioDao;
+	private UsuarioDaoImpl usuarioDao;
+	
+	@Inject
+	private ServicoUsuario servicoUsuario;
 		
 	@Override
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -40,16 +47,19 @@ public class UsuarioNegocioImpl implements UsuarioNegocio {
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public UsuarioDto adiciona(Usuario usuario) {
-		Usuario usuarioRet = usuarioDao.criar(usuario);
+		Usuario usuarioRet = usuarioDao.salvar(usuario);
 		return new UsuarioDto(usuarioRet.getId(), usuarioRet.getNome(), usuarioRet.getUsuario());
 	}
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public UsuarioDto atualiza(int id, Usuario usuario) {
-		Usuario usuarioRet =  usuarioDao.atualiza(id, usuario);
+		Usuario usuarioParaSalvar = servicoUsuario.pesquisaUsuario(id);
+		Usuario usuarioRet =  usuarioDao.salvar(usuarioParaSalvar);
 		return new UsuarioDto(usuarioRet.getId(), usuarioRet.getNome(), usuarioRet.getUsuario());
 	}
+
+	
 
 	@Override	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
