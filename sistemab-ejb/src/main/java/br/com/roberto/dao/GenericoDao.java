@@ -7,41 +7,47 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Local
-public abstract class GenericoDao<T, K> {
+public class GenericoDao<T, Long> implements GenericDAO<T, Long>  {
 
-	private Class<T> classe;
-	
 	@PersistenceContext
 	private EntityManager manager;
 	
+	private Class<T> classEntidade;
+	
+	
 	@SuppressWarnings("unchecked")
-	public T buscaPorId(int id, T t) {
-		return (T) manager.find(getClasse(), id);
+	public GenericoDao() {
+		this.classEntidade = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
+				.getActualTypeArguments()[0]; 
 	}
 	
-	public T salvar(T t) {
-		manager.merge(t);
-		return t;
-	}
-	
-	public boolean excluir(int id) {
-		Long idInterno = new Long(id);
-		T objetoExistente = (T) manager.find(getClasse(), idInterno);
-		if (objetoExistente == null) {
-			return false;
-		}
-		manager.remove(objetoExistente);
-		return true;
-	}
-	
-	private Class getClasse() {
-		if(classe == null) {
-			classe = (Class<T>) ((ParameterizedType) getClasse().getGenericSuperclass()).getActualTypeArguments()[0];
-		}
-		return classe;
+	@Override
+	public T buscaPorId(Long id) {
+		return manager.find(classEntidade, id);
 	}
 
+	@Override
+	public T salvar(T entidade) {
+	    T meuObjeto = manager.merge(entidade);
+		return meuObjeto;
+	}
+	
+	@Override
+	public boolean remove(Long id) {
+		try {
+			T minhaEntidade = this.buscaPorId(id);
+			manager.remove(minhaEntidade);
+			return true;
+		}catch (Exception e) {
+			throw new RuntimeException(e.getCause()+" "+e.getMessage());
+		}
+	}
+	
 	public EntityManager getManager() {
 		return manager;
 	}
+
+	
+
+	
 }

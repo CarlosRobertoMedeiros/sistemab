@@ -27,7 +27,6 @@ import br.com.roberto.model.Usuario;
 import br.com.roberto.negocio.UsuarioNegocio;
 import br.com.roberto.resource.bean.UsuarioFilterBean;
 
-
 @Path("/usuarios")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -43,11 +42,6 @@ public class UsuarioResource {
 	public Response getUsuarios(@BeanParam UsuarioFilterBean filterBean)  {
 		List<UsuarioDto> usuarios = usuarioNegocio.listaTodos(filterBean.getInicio(), filterBean.getTamanho());
 		
-		if (usuarios.isEmpty()) {
-			return Response
-				.noContent()
-				.build();
-		}
 		return Response
 				.ok(usuarios)
 				.build();
@@ -56,13 +50,9 @@ public class UsuarioResource {
 	@PermitAll
 	@GET
 	@Path("/{id}")
-	public Response getUsuario(@PathParam("id") int id) {
+	public Response getUsuario(@PathParam("id") Long id) {
 		UsuarioDto usuario = usuarioNegocio.listaPorId(id);
-		if(usuario==null) {
-			return Response
-					.noContent()
-					.build();
-		}
+		
 		return Response
 				.ok(usuario)
 				.build();
@@ -82,9 +72,10 @@ public class UsuarioResource {
 				 .build();
 	}
 	
+	@RolesAllowed("ADMIN")
 	@PUT
 	@Path("/{id}")
-	public Response atualizarUsuario(@PathParam("id") int id,  Usuario usuario, @Context UriInfo uriInfo) throws URISyntaxException {
+	public Response atualizarUsuario(@PathParam("id") Long id,  Usuario usuario, @Context UriInfo uriInfo) throws URISyntaxException {
 		
 		UsuarioDto meuUsuario = usuarioNegocio.atualiza(id, usuario);
 		URI uri = uriInfo.getAbsolutePathBuilder().path(meuUsuario.getId().toString()).build();
@@ -98,20 +89,11 @@ public class UsuarioResource {
 	@RolesAllowed("ADMIN")
 	@DELETE
 	@Path("/{id}")
-	public Response excluirUsuario(@PathParam("id") int id) {
-		boolean excluiu = usuarioNegocio.remove(id);
-		if (excluiu) {
-			return Response
-					 .status(Status.OK)
-					 .build();
-		}
-		else {
-			return Response
-					.status(Status.NOT_FOUND)
-					.build();
-		}
-	}
-	
-	
+	public Response excluirUsuario(@PathParam("id") Long id) {
+		usuarioNegocio.remove(id);
+		return Response
+			 .status(Status.OK)
+			 .build();
 
+	}
 }

@@ -4,7 +4,15 @@ import java.util.List;
 
 import br.com.roberto.model.Usuario;
 
-public interface UsuarioDao {
+public class UsuarioDao extends GenericoDao<Usuario, Long>{
 
-	List<Usuario> buscaTodos(int inicio, int tamanho);
+	public List<Usuario> buscaTodos(int inicio, int tamanho) {
+		List<Usuario> usuarios = this.getManager().createQuery("select u from Usuario u", Usuario.class)
+				.setFirstResult(inicio).setMaxResults(tamanho).getResultList();
+		return usuarios;
+
+	}
+
+	
+
 }

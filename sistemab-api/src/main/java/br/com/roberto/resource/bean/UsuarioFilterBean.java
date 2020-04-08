@@ -3,7 +3,6 @@ package br.com.roberto.resource.bean;
 import javax.ws.rs.QueryParam;
 
 public class UsuarioFilterBean {
-
 	private @QueryParam("inicio") int inicio;
 	private @QueryParam("tamanho") int tamanho;
 

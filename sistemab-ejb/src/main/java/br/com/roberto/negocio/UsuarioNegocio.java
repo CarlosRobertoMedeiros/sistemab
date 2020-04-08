@@ -12,11 +12,11 @@ public interface UsuarioNegocio {
 	
 	List<UsuarioDto> listaTodos(int inicio, int tamanho); 
 	
-	UsuarioDto listaPorId(int id); 
+	UsuarioDto listaPorId(Long id); 
 
 	UsuarioDto adiciona(Usuario usuario);
 
-	UsuarioDto atualiza(int id, Usuario usuario);
+	UsuarioDto atualiza(Long id, Usuario usuario);
 
-	boolean remove(int id);
+	boolean remove(Long id);
 }
