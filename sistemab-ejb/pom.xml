@@ -14,11 +14,7 @@
 	<version>${sistemab-camada-ejb-version}</version>
 	<packaging>ejb</packaging>
 
-	<properties>
-		<c3p0-version>0.9.5.5</c3p0-version>
-	
-	</properties>
-	
+
 	<dependencies>
 		
 		<dependency>
@@ -33,15 +29,6 @@
 		    <artifactId>commons-beanutils</artifactId>
 		    <version>1.9.4</version>
 		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/com.mchange/c3p0 -->
-		<dependency>
-		    <groupId>com.mchange</groupId>
-		    <artifactId>c3p0</artifactId>
-		    <version>${c3p0-version}</version>
-		</dependency>
-		
-		
 		
 	</dependencies>
 

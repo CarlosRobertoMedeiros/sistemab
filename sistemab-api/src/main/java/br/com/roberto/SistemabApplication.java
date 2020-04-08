@@ -12,11 +12,11 @@ import javax.ws.rs.core.Application;
  */
 
 //TODO: Implementar um Logger Genérico
-//TODO: Implementar um Pool de Conexões
+//TODO: Implementar o HATEOS
 //TODO: Implementar o Swagger
 //TODO: Implementar o Jacoco
 //TODO: Implementar os testes
-//TODO: Implementar o HATEOS
+
 // https://www.youtube.com/watch?v=Vdk_tUhcJZM&list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn&index=28
 //TODO: Colocar o Backend no Docker
 @ApplicationPath("/v1")
