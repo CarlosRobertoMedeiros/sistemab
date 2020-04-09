@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 @Local
 public class GenericoDao<T, Long> implements GenericDAO<T, Long>  {
 
-	@PersistenceContext
+	@PersistenceContext(unitName = "primary")
 	private EntityManager manager;
 	
 	private Class<T> classEntidade;
