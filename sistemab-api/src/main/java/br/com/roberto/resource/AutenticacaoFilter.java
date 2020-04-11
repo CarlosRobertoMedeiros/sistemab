@@ -20,7 +20,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 
-@Provider
+//@Provider
 public class AutenticacaoFilter implements ContainerRequestFilter {
 
 	private static final String AUTHORIZATION_HEADER = "Authorization";

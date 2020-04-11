@@ -11,7 +11,6 @@ import javax.ws.rs.core.Application;
  *
  */
 
-//TODO: Implementar um Logger Genérico
 //TODO: Implementar o HATEOS
 //TODO: Implementar o Swagger
 //TODO: Implementar o Jacoco
@@ -22,6 +21,22 @@ import javax.ws.rs.core.Application;
 @ApplicationPath("/v1")
 public class SistemabApplication extends Application{
 	 
+	
+//	@Override
+//	public Set<Class<?>> getClasses() {
+//		Set<Class<?>> classes = new HashSet<Class<?>>();
+//        classes.add(UsuarioResource.class);
+//        return classes;
+//	}
+	
+//	@Override
+//	public Set<Object> getSingletons() {
+//		Set<Object> set = new HashSet<>();
+//	    set.add(new DadosNaoEncontradosExceptionMapper());
+//	    //set.add(new GenericoExceptionMapper());
+//	    return set;
+//	}
+	
 	
 	public SistemabApplication() {
 	

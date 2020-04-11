@@ -18,7 +18,7 @@ public class UsuarioServico {
 	UsuarioDao usuarioDao;
 	
 	
-	public Usuario pesquisaUsuario(Long id) {
+	public Usuario pesquisaUsuario(Long id) throws DadosNaoEncontradosException {
 		Usuario usuarioInterno = usuarioDao.buscaPorId(id);
 		Usuario usuarioParaSalvar = new Usuario();
 		if (usuarioInterno==null) {

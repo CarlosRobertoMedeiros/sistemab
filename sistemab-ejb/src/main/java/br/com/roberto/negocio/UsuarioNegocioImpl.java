@@ -3,6 +3,7 @@ package br.com.roberto.negocio;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -10,11 +11,13 @@ import javax.inject.Inject;
 
 import br.com.roberto.dao.UsuarioDao;
 import br.com.roberto.dto.UsuarioDto;
+import br.com.roberto.interceptor.Logger;
 import br.com.roberto.model.Usuario;
 import br.com.roberto.negocio.exception.DadosNaoEncontradosException;
 import br.com.roberto.negocio.servico.UsuarioServico;
 
 @Stateless
+@Logger
 public class UsuarioNegocioImpl implements UsuarioNegocio {
 
 	@Inject
@@ -25,7 +28,7 @@ public class UsuarioNegocioImpl implements UsuarioNegocio {
 	
 	@Override
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public List<UsuarioDto> listaTodos(int inicio, int tamanho) {
+	public List<UsuarioDto> listaTodos(int inicio, int tamanho) throws DadosNaoEncontradosException{
 		List<Usuario> usuarios =  usuarioDao.buscaTodos(inicio, tamanho);
 		
 		if (usuarios==null){
@@ -62,15 +65,20 @@ public class UsuarioNegocioImpl implements UsuarioNegocio {
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean remove(Long id) {
-		//try {
+		try {
 			usuarioServico.remove(id);
 			return true;
-		/*
-		 * }catch (Exception e) { new RuntimeException(e.getCause()+" "+e.getMessage());
-		 * } return false;
-		 */
+		
+		}catch (EJBException e) { 
+			new RuntimeException(e.getCause()+" "+e.getMessage());
+		}
+			return false;
+			
 	}
-
 	
-	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
+	}
 }

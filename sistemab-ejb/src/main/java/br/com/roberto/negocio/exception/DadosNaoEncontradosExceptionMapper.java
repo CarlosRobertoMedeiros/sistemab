@@ -1,13 +1,11 @@
 package br.com.roberto.negocio.exception;
 
-import javax.annotation.Priority;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-@Priority(1)
 public class DadosNaoEncontradosExceptionMapper implements ExceptionMapper<DadosNaoEncontradosException> {
 
 	@Override

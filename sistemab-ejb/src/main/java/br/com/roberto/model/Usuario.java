@@ -10,27 +10,26 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tb_usuario", schema = "sistemab")
 public class Usuario {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false, unique = true)
 	private Long codUsuario;
-	
-	@Column(name="nome", nullable = false, length = 100)
+
+	@Column(name = "nome", nullable = false, length = 100)
 	private String nome;
-	
-	@Column(name="usuario", nullable = false, length = 100)
+
+	@Column(name = "usuario", nullable = false, length = 100)
 	private String usuario;
-	
-	
-	@Column(name="senha", nullable = false, length = 20)
+
+	@Column(name = "senha", nullable = false, length = 20)
 	private String senha;
-	
-	
-	@Column(name="ativo", nullable = false, length = 1)
+
+	@Column(name = "ativo", nullable = false, length = 1)
 	private boolean ativo = true;
 
 	public Usuario() {
+
 	}
 
 	public Usuario(Long codUsuario, String nome, String usuario, String senha) {

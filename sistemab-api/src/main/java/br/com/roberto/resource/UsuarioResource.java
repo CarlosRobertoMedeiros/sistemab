@@ -2,6 +2,7 @@ package br.com.roberto.resource;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -37,64 +38,132 @@ public class UsuarioResource {
 	@Inject
 	private UsuarioNegocio usuarioNegocio;
 
-	
-	@PermitAll
 	@GET
-	public Response getUsuarios(@BeanParam UsuarioFilterBean filterBean)  {
+	public Response getUsuarios(@BeanParam UsuarioFilterBean filterBean, @Context UriInfo uriInfo)  {
 		List<UsuarioDto> usuarios = usuarioNegocio.listaTodos(filterBean.getInicio(), filterBean.getTamanho());
+		List<UsuarioDto> usuariosTratados = new ArrayList<>();
+		
+		usuarios.forEach(usuario ->{
+			acoesHateosParaUsuario(uriInfo,usuario);
+			usuariosTratados.add(usuario);
+		});
+		
 		
 		return Response
-				.ok(usuarios)
+				.ok(usuariosTratados)
 				.build();
 	}
 
-	@PermitAll
 	@GET
 	@Path("/{id}")
-	public Response getUsuario(@PathParam("id") Long id) {
+	public Response getUsuario(@PathParam("id") Long id, @Context UriInfo uriInfo) {
 		UsuarioDto usuario = usuarioNegocio.listaPorId(id);
+		
+		acoesHateosParaUsuario(uriInfo, usuario);
 		
 		return Response
 				.ok(usuario)
 				.build();
 	}
 
-	@RolesAllowed("ADMIN")
 	@POST
 	public Response adicionarUsuario(Usuario usuario, @Context UriInfo uriInfo) throws URISyntaxException {
 
 		UsuarioDto novoUsuario = usuarioNegocio.adiciona(usuario);
-		String newId = String.valueOf(novoUsuario.getId());
-		URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();
 		
-		return Response.created(uri)
+		acoesHateosParaUsuario(uriInfo, novoUsuario);
+		
+		return Response
 				 .status(Status.CREATED)
 				 .entity(novoUsuario)
 				 .build();
 	}
 	
-	@RolesAllowed("ADMIN")
 	@PUT
 	@Path("/{id}")
 	public Response atualizarUsuario(@PathParam("id") Long id,  Usuario usuario, @Context UriInfo uriInfo) throws URISyntaxException {
 		
 		UsuarioDto meuUsuario = usuarioNegocio.atualiza(id, usuario);
-		URI uri = uriInfo.getAbsolutePathBuilder().path(meuUsuario.getId().toString()).build();
 		
-		return Response.created(uri)
-				 .status(Status.OK)
+		acoesHateosParaUsuario(uriInfo, meuUsuario);
+
+		return Response
+				 .status(Status.CREATED)
 				 .entity(meuUsuario)
 				 .build();
 	}
 	
-	@RolesAllowed("ADMIN")
 	@DELETE
 	@Path("/{id}")
-	public Response excluirUsuario(@PathParam("id") Long id) {
+	public Response excluirUsuario(@PathParam("id") Long id,  @Context UriInfo uriInfo) {
 		usuarioNegocio.remove(id);
+		UsuarioDto usuario = new UsuarioDto();
+		acoesHateosParaExcluir(uriInfo, usuario);
+		
 		return Response
 			 .status(Status.OK)
+			 .entity(usuario)
 			 .build();
 
 	}
+
+	
+	private String getUriForSelf(UriInfo uriInfo, UsuarioDto usuario) {
+		String uri = uriInfo.getBaseUriBuilder()
+				.path(UsuarioResource.class)
+				.path(Long.toString(usuario.getId()))
+				.build()
+				.toString();
+		return uri;
+	}
+	
+	private String getUriForAdicionar(UriInfo uriInfo) {
+		String uri = uriInfo.getBaseUriBuilder()
+				.path(UsuarioResource.class)
+				.build()
+				.toString();
+		return uri;
+	}
+	
+	private String getUriForExcluir(UriInfo uriInfo, UsuarioDto usuario) {
+		String uri = uriInfo.getBaseUriBuilder()
+				.path(UsuarioResource.class)
+				.path(Long.toString(usuario.getId()))
+				.build()
+				.toString();
+		return uri;
+	}
+	
+	private String getUriForAlterar(UriInfo uriInfo, UsuarioDto usuario) {
+		String uri = uriInfo.getBaseUriBuilder()
+				.path(UsuarioResource.class)
+				.path(Long.toString(usuario.getId()))
+				.build()
+				.toString();
+		return uri;
+	}
+	
+	private String getUriForListarTodos(UriInfo uriInfo) {
+		String uri = uriInfo.getBaseUriBuilder()
+				.path(UsuarioResource.class)
+				.build()
+				.toString()+"?inicio=0&tamanho=10";
+		return uri;
+	}
+	
+	private UsuarioDto acoesHateosParaUsuario(UriInfo uriInfo, UsuarioDto usuario) {
+		usuario.addLink(getUriForSelf(uriInfo, usuario),"listarPorId");
+		usuario.addLink(getUriForAdicionar(uriInfo),"adicionar");
+		usuario.addLink(getUriForExcluir(uriInfo, usuario),"excluir");
+		usuario.addLink(getUriForAlterar(uriInfo, usuario),"alterar");
+		usuario.addLink(getUriForListarTodos(uriInfo),"listarTodos","Atenção a Paginação");
+		return usuario; 
+	}
+	
+	private UsuarioDto acoesHateosParaExcluir(UriInfo uriInfo, UsuarioDto usuario) {
+		usuario.addLink(getUriForAdicionar(uriInfo),"adicionar");
+		usuario.addLink(getUriForListarTodos(uriInfo),"listarTodos","Atenção a Paginação");
+		return usuario; 
+	}
+	
 }
