@@ -11,7 +11,7 @@
 
 	<artifactId>sistemab-camada-api</artifactId>
 	<packaging>war</packaging>
-	<version>${sistemab-camada-api-version}</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<name>sistemab-camada-api</name>
 
 	<properties>
@@ -20,7 +20,7 @@
 		<swagger-jaxrs-version>1.5.20</swagger-jaxrs-version>
 
 		<!-- Dependências Entre Projetos -->
-		<sistemab-ejb-version>0.0.1-SNAPSHOT</sistemab-ejb-version>
+<!--		<sistemab-ejb-version>0.0.1-SNAPSHOT</sistemab-ejb-version>-->
 
 		
 
@@ -40,9 +40,10 @@
 		<dependency>
 			<groupId>br.com.roberto.sistemab</groupId>
 			<artifactId>sistemab-camada-ejb</artifactId>
-			<version>${sistemab-camada-ejb-version}</version>
+			<version>0.0.1-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
@@ -53,19 +54,6 @@
 
 	<build>
 		<plugins>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>3.2.3</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
 			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -97,6 +85,11 @@
 							
 						</resource>
 					</webResources>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>

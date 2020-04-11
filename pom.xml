@@ -28,9 +28,9 @@
 
 
 		<!-- Dependências Internas -->
-		<sistemab-camada-api-version>0.0.4-SNAPSHOT</sistemab-camada-api-version>
-		<sistemab-camada-ejb-version>0.0.1-SNAPSHOT</sistemab-camada-ejb-version>
-		<sistemab-camada-ear-version>0.0.1-SNAPSHOT</sistemab-camada-ear-version>
+<!--		<sistemab-camada-api-version>0.0.4-SNAPSHOT</sistemab-camada-api-version>-->
+<!--		<sistemab-camada-ejb-version>0.0.1-SNAPSHOT</sistemab-camada-ejb-version>-->
+<!--		<sistemab-camada-ear-version>0.0.1-SNAPSHOT</sistemab-camada-ear-version>-->
 
 
 

@@ -1,13 +1,11 @@
 package br.com.roberto.resource;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.EJBException;
 import javax.inject.Inject;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
@@ -25,9 +23,11 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import br.com.roberto.dto.UsuarioDto;
+import br.com.roberto.hateos.MontaMensagemHateos;
 import br.com.roberto.model.Usuario;
 import br.com.roberto.negocio.UsuarioNegocio;
 import br.com.roberto.resource.bean.UsuarioFilterBean;
+
 
 @Path("/usuarios")
 @Produces(MediaType.APPLICATION_JSON)
@@ -38,13 +38,16 @@ public class UsuarioResource {
 	@Inject
 	private UsuarioNegocio usuarioNegocio;
 
+	@Inject
+	private MontaMensagemHateos mensagemHateos;
+
 	@GET
 	public Response getUsuarios(@BeanParam UsuarioFilterBean filterBean, @Context UriInfo uriInfo)  {
 		List<UsuarioDto> usuarios = usuarioNegocio.listaTodos(filterBean.getInicio(), filterBean.getTamanho());
 		List<UsuarioDto> usuariosTratados = new ArrayList<>();
 		
 		usuarios.forEach(usuario ->{
-			acoesHateosParaUsuario(uriInfo,usuario);
+			mensagemHateos.acoesHateosParaUsuario(uriInfo,usuario);
 			usuariosTratados.add(usuario);
 		});
 		
@@ -57,13 +60,20 @@ public class UsuarioResource {
 	@GET
 	@Path("/{id}")
 	public Response getUsuario(@PathParam("id") Long id, @Context UriInfo uriInfo) {
-		UsuarioDto usuario = usuarioNegocio.listaPorId(id);
+		try {
+			UsuarioDto usuario = usuarioNegocio.listaPorId(id);
+			mensagemHateos.acoesHateosParaEdicaoUsuario(uriInfo,usuario);
+
+			return Response
+					.ok(usuario)
+					.build();
+
+		}catch (EJBException exception){
+			System.out.println("Qual o Problema => "+exception.getCause()+" "+exception.getMessage());
+		}
+		return  null;
 		
-		acoesHateosParaUsuario(uriInfo, usuario);
-		
-		return Response
-				.ok(usuario)
-				.build();
+
 	}
 
 	@POST
@@ -71,7 +81,7 @@ public class UsuarioResource {
 
 		UsuarioDto novoUsuario = usuarioNegocio.adiciona(usuario);
 		
-		acoesHateosParaUsuario(uriInfo, novoUsuario);
+		mensagemHateos.acoesHateosParaInsercao(uriInfo,novoUsuario);
 		
 		return Response
 				 .status(Status.CREATED)
@@ -83,13 +93,13 @@ public class UsuarioResource {
 	@Path("/{id}")
 	public Response atualizarUsuario(@PathParam("id") Long id,  Usuario usuario, @Context UriInfo uriInfo) throws URISyntaxException {
 		
-		UsuarioDto meuUsuario = usuarioNegocio.atualiza(id, usuario);
+		UsuarioDto usuarioAtualizado = usuarioNegocio.atualiza(id, usuario);
 		
-		acoesHateosParaUsuario(uriInfo, meuUsuario);
+		mensagemHateos.acoesHateosParaEdicaoUsuario(uriInfo,usuarioAtualizado);
 
 		return Response
 				 .status(Status.CREATED)
-				 .entity(meuUsuario)
+				 .entity(usuarioAtualizado)
 				 .build();
 	}
 	
@@ -98,72 +108,14 @@ public class UsuarioResource {
 	public Response excluirUsuario(@PathParam("id") Long id,  @Context UriInfo uriInfo) {
 		usuarioNegocio.remove(id);
 		UsuarioDto usuario = new UsuarioDto();
-		acoesHateosParaExcluir(uriInfo, usuario);
 		
+		mensagemHateos.acoesHateosParaExcluir(uriInfo, usuario);
+				
 		return Response
 			 .status(Status.OK)
 			 .entity(usuario)
 			 .build();
 
-	}
-
-	
-	private String getUriForSelf(UriInfo uriInfo, UsuarioDto usuario) {
-		String uri = uriInfo.getBaseUriBuilder()
-				.path(UsuarioResource.class)
-				.path(Long.toString(usuario.getId()))
-				.build()
-				.toString();
-		return uri;
-	}
-	
-	private String getUriForAdicionar(UriInfo uriInfo) {
-		String uri = uriInfo.getBaseUriBuilder()
-				.path(UsuarioResource.class)
-				.build()
-				.toString();
-		return uri;
-	}
-	
-	private String getUriForExcluir(UriInfo uriInfo, UsuarioDto usuario) {
-		String uri = uriInfo.getBaseUriBuilder()
-				.path(UsuarioResource.class)
-				.path(Long.toString(usuario.getId()))
-				.build()
-				.toString();
-		return uri;
-	}
-	
-	private String getUriForAlterar(UriInfo uriInfo, UsuarioDto usuario) {
-		String uri = uriInfo.getBaseUriBuilder()
-				.path(UsuarioResource.class)
-				.path(Long.toString(usuario.getId()))
-				.build()
-				.toString();
-		return uri;
-	}
-	
-	private String getUriForListarTodos(UriInfo uriInfo) {
-		String uri = uriInfo.getBaseUriBuilder()
-				.path(UsuarioResource.class)
-				.build()
-				.toString()+"?inicio=0&tamanho=10";
-		return uri;
-	}
-	
-	private UsuarioDto acoesHateosParaUsuario(UriInfo uriInfo, UsuarioDto usuario) {
-		usuario.addLink(getUriForSelf(uriInfo, usuario),"listarPorId");
-		usuario.addLink(getUriForAdicionar(uriInfo),"adicionar");
-		usuario.addLink(getUriForExcluir(uriInfo, usuario),"excluir");
-		usuario.addLink(getUriForAlterar(uriInfo, usuario),"alterar");
-		usuario.addLink(getUriForListarTodos(uriInfo),"listarTodos","Atenção a Paginação");
-		return usuario; 
-	}
-	
-	private UsuarioDto acoesHateosParaExcluir(UriInfo uriInfo, UsuarioDto usuario) {
-		usuario.addLink(getUriForAdicionar(uriInfo),"adicionar");
-		usuario.addLink(getUriForListarTodos(uriInfo),"listarTodos","Atenção a Paginação");
-		return usuario; 
 	}
 	
 }

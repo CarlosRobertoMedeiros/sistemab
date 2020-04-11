@@ -10,7 +10,7 @@
 	<artifactId>sistemab-camada-ear</artifactId>
 	<packaging>ear</packaging>
 	<name>sistemab-camada-ear</name>
-	<version>${sistemab-camada-ear-version}</version>
+	<version>0.0.1-SNAPSHOT</version>
   
   
 	<profiles>
@@ -77,15 +77,15 @@
     	<dependency>
     		<groupId>br.com.roberto.sistemab</groupId>
     		<artifactId>sistemab-camada-ejb</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
     		<type>ejb</type>
-    		<version>${sistemab-camada-ejb-version}</version>
     	</dependency>
     	
     	<dependency>
     		<groupId>br.com.roberto.sistemab</groupId>
     		<artifactId>sistemab-camada-api</artifactId>
     		<type>war</type>
-    		<version>${sistemab-camada-api-version}</version>
+			<version>0.0.4-SNAPSHOT</version>
     	</dependency>
     
     </dependencies> 

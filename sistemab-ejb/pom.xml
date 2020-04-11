@@ -11,7 +11,7 @@
 
 	<artifactId>sistemab-camada-ejb</artifactId>
 	<name>sistemab-camada-ejb</name>
-	<version>${sistemab-camada-ejb-version}</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>ejb</packaging>
 
 
@@ -37,6 +37,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-ejb-plugin</artifactId>
+				<version>3.0.1</version>
 				<configuration>
 					<ejbVersion>3.2</ejbVersion>
 				</configuration>
